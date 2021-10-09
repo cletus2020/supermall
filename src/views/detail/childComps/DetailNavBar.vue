@@ -6,9 +6,10 @@
       </div>
       <div slot="center" class="title">
         <div v-for="(item, index) in titles"
-        :key="index" 
-        class="title-item" :class="{active: index === currentIndex}"
-        @click="titleClick(index)">
+          :key="index" 
+          class="title-item" 
+          :class="{active: currentIndex === index}"
+          @click="titleClick(index)">
           {{item}}
         </div>
       </div>

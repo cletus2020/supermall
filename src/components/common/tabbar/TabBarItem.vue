@@ -3,7 +3,7 @@
   <div class="tab-bar-item" @click="itemClick">
     <div v-if="!isActive"><slot name="item-icon"></slot></div>
     <div v-else><slot name="item-icon-active"></slot></div>
-    <div :style="activeStyle"><slot name="item-text"></slot></div>
+    <div class="item-text" :style="activeStyle"><slot name="item-text"></slot></div>
     
   </div>
 </template>
@@ -44,7 +44,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .tab-bar-item {
     flex: 1;
     text-align: center;
@@ -58,6 +58,12 @@ export default {
     margin-top: 3px;
     vertical-align: middle;
     margin-bottom: 2px;
+  }
+
+  .item-text {
+    font-size: 12px;
+    margin-top: 3px;
+    color: #333;
   }
 
 </style>

@@ -7,20 +7,24 @@
         <i class="arrow-right"></i>
       </div>
     </div>
+
     <div class="info-user">
       <img :src="commentInfo.user.avatar" alt="">
       <span>{{commentInfo.user.uname}}</span>
     </div>
+
     <div class="info-detail">
       <p>{{commentInfo.content}}</p>
       <div class="info-other">
         <span class="date">{{commentInfo.created | showDate}}</span>
         <span>{{commentInfo.style}}</span>
       </div>
+      
       <div class="info-imgs">
         <img :src="item" v-for="(item, index) in commentInfo.images" :key="index" alt="">
       </div>
     </div>
+
   </div>
 </template>
 

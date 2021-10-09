@@ -23,22 +23,20 @@
   </div>
 </template>
 
-<script>
+<script>  
   import HomeSwiper from './childComps/HomeSwiper'
   import RecommendView from './childComps/RecommendView.vue'
   import FeatureView from './childComps/FeatureView.vue'
   
-  import NavBar from '../../components/common/navbar/NavBar'
-  import TabControl from '../../components/content/tabControl/TabControl'
-  import GoodsList from '../../components/content/goods/GoodsList.vue'
-  import Scroll from '../../components/common/scroll/Scroll.vue'
-  import BackTop from '../../components/content/backTop/BackTop.vue'
+  import NavBar from 'components/common/navbar/NavBar'
+  import TabControl from 'components/content/tabControl/TabControl'
+  import GoodsList from 'components/content/goods/GoodsList.vue'
+  import Scroll from 'components/common/scroll/Scroll.vue'
+  import BackTop from 'components/content/backTop/BackTop.vue'
 
-  import {
-    getHomeMultidata,
-    getHomeGoods
-  } from '../../network/home'
-  import {itemListenerMixin} from '../../common/mixin'
+  import { getHomeMultidata, getHomeGoods } from '../../network/home'
+  import { itemListenerMixin } from '../../common/mixin'
+  import { debounce } from '../../common/utils'
   // import Swiper from '../../components/common/swiper/Swiper'
   // import SwiperItem from '../../components/common/swiper/SwiperItem'
   // import {Swiper, SwiperItem} from '../../components/common/swiper'
@@ -62,7 +60,7 @@
         banners: [],
         recommends: [],
         goods: {
-          'pop': {page:0, list: []},
+          'pop': {page:0, list: []}, 
           'new': {page:0, list: []},
           'sell': {page:0, list: []},
         },
@@ -104,14 +102,17 @@
       
     },
     mounted() {
-      
+      const refresh = debounce(this.$refs.scroll.refresh, 50)
+      // 监听item中图片加载完成
+      this.$bus.$on('itemImageLoad', () => {
+        refresh()
+      })
     },
     methods: {
       
       /*
       * 事件监听相关的方法
       */
-      
 
       tabClick(index) {
         switch (index) {
@@ -170,20 +171,10 @@
 </script>
 
 <style scoped>
-  /* #home {
-    padding-top: 44px;
-    
-  } */
 
   .home-nav {
     background-color: var(--color-tint);
     color: #fff;
-
-    /* position: sticky;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 9; */
   }
 
   .content {
@@ -200,9 +191,4 @@
     z-index: 9;
   }
 
-  /* .content {
-    height: calc(100% - 93px);
-    overflow: hidden;
-    margin-top: 44px;
-  } */
 </style>

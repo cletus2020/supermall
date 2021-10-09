@@ -5,10 +5,10 @@
       <detail-swiper :topImages="topImages"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
-      <detail-goods-info :detailInfo="detailInfo"/>
+      <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad"/>
       <detail-param-info ref="params" :paramInfo="paramInfo"/>
       <detail-comment-info ref="comment" :commentInfo="commentInfo"/>
-      <goods-list ref="recommend" :goods="recommends"/>
+      <goods-list ref="recommend" :goods="recommends" @itemImageLoad="imageLoad"/>
       <!-- <detail-recommend-info ref="recommend" :recommendList="recommendList"/> -->
     </scroll>
   </div>  
@@ -29,7 +29,6 @@
 
   import {getDetail, Goods, Shop, GoodsParam, getRecommend} from '../../network/detail'
   import {itemListenerMixin} from '../../common/mixin'
-  import {debounce} from '../../common/utils'
 
   export default {
     name: "Detail",
@@ -83,29 +82,6 @@
         if(data.rate.cRate !== 0) {
           this.commentInfo = data.rate.list[0]
         }
-        /*
-        // 第一次获取
-        // 值不对，this.$refs.params.$el压根没有渲染
-        this.themeTopYs = []
-
-        this.themeTopYs.push(0)
-        this.themeTopYs.push(this.$refs.params.$el.offsetTop)
-        this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
-        this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
-        */
-        // 第二次获取
-        // 值不对，图片没有计算在内
-        // this.$nextTick(() => {
-        //   // 根据最新的数据，对应的DOM是已经被渲染出来
-        //   // 但是图片依然是没有加载完(目前获取到offsetTop不包含其中的图片)
-        //   // offsetTop值不对的时候，都是因为图片的问题
-        //   this.themeTopYs = []
-
-        //   this.themeTopYs.push(0)
-        //   this.themeTopYs.push(this.$refs.params.$el.offsetTop)
-        //   this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
-        //   this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
-        // })
         
       })
       
@@ -127,6 +103,9 @@
         })
     },
     methods: {
+      imageLoad() {
+        this.$refs.scroll.refresh()
+      },
       // _getOffsetTops() {
       //   this.themeTops = []
       //   this.themeTops.push(this.$refs.base.$el.offsetTop)
@@ -186,7 +165,7 @@
       _getRecommend() {
         getRecommend().then((res, error) => {
           if (error) return
-          this.recommendList = res.data.list
+          this.recommends = res.data.list
         })
       }
     },
@@ -201,7 +180,6 @@
 
 <style scoped>
   #detail {
-    height: 100vh;
     position: relative;
     z-index: 1;
     background-color: #fff;

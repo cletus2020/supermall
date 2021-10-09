@@ -1,7 +1,7 @@
-import {request} from "./request"
+import axios from './axios'
 
 export function getDetail(iid) {
-  return request({
+  return axios({
     url: './detail',
     params: {
       iid
@@ -43,7 +43,7 @@ export class Shop {
 }
 
 export function getRecommend() {
-  return request({
+  return axios({
     url: '/recommend'
   })
 }
